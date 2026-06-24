@@ -28,6 +28,30 @@ const GRADIENT_PRESETS = [
   { label: '夜空', value: 'linear-gradient(135deg,#0d0d0d,#1a1a2e,#2d1b69)' },
 ];
 
+const ALL_MODULES = [
+  { id: 'clock',    name: '時鐘' },
+  { id: 'weather',  name: '天氣' },
+  { id: 'search',   name: '搜尋列' },
+  { id: 'links',    name: '常用連結' },
+  { id: 'leetcode', name: 'LeetCode' },
+  { id: 'f1',       name: 'F1 賽事' },
+];
+
+function storageGet(keys) {
+  return new Promise(resolve => {
+    if (typeof chrome !== 'undefined' && chrome.storage)
+      chrome.storage.sync.get(keys, resolve);
+    else resolve({});
+  });
+}
+function storageSet(obj) {
+  return new Promise(resolve => {
+    if (typeof chrome !== 'undefined' && chrome.storage)
+      chrome.storage.sync.set(obj, resolve);
+    else resolve();
+  });
+}
+
 async function loadSettings() {
   return new Promise(resolve => {
     if (typeof chrome !== 'undefined' && chrome.storage) {
@@ -139,6 +163,9 @@ function showToast() {
 // ── Main ─────────────────────────────────────────────────────
 async function main() {
   const settings = await loadSettings();
+  const { hiddenModules: rawHidden } = await storageGet(['hiddenModules']);
+  let hiddenModules = rawHidden ?? [];
+
   applyStyle(settings.style);
   applyTheme(settings.theme, settings.style);
 
@@ -190,6 +217,31 @@ async function main() {
   f1TypeCtrl.addEventListener('click', e => {
     const btn = e.target.closest('.seg-btn');
     if (btn) setF1TrackType(btn.dataset.value);
+  });
+
+  // 模組開關
+  const togglesContainer = document.getElementById('module-toggles');
+  ALL_MODULES.forEach(({ id, name }) => {
+    const row = document.createElement('div');
+    row.className = 'settings-row';
+    const label = document.createElement('label');
+    label.htmlFor = `mod-toggle-${id}`;
+    label.textContent = name;
+    const tog = document.createElement('label');
+    tog.className = 'toggle';
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.id = `mod-toggle-${id}`;
+    cb.checked = !hiddenModules.includes(id);
+    cb.addEventListener('change', () => {
+      hiddenModules = hiddenModules.filter(m => m !== id);
+      if (!cb.checked) hiddenModules.push(id);
+    });
+    const track = document.createElement('span');
+    track.className = 'toggle-track';
+    tog.append(cb, track);
+    row.append(label, tog);
+    togglesContainer.appendChild(row);
   });
 
   document.getElementById('s-theme').addEventListener('change', e => {
@@ -333,6 +385,7 @@ async function main() {
       localStorage.removeItem(`f1_standings_cache_driver_${settings.f1DriverId}`);
 
     await saveSettings(updated);
+    await storageSet({ hiddenModules });
     showToast();
   });
 }

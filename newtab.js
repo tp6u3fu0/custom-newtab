@@ -34,17 +34,17 @@ function snapSize(w, h) {
 
 // 預設位置（col/row 格座標，左上角）
 const DEFAULT_POSITIONS = {
-  search:   { col: 3, row: 0 },
-  clock:    { col: 0, row: 0 },
-  weather:  { col: 7, row: 0 },
+  clock:    { col: 3, row: 0 },
+  search:   { col: 3, row: 2 },
   links:    { col: 3, row: 3 },
-  leetcode: { col: 0, row: 2 },
-  f1:       { col: 7, row: 2 },
+  weather:  { col: 0, row: 0 },
+  leetcode: { col: 0, row: 3 },
+  f1:       { col: 6, row: 3 },
 };
 
 const DEFAULT_SIZES = {
-  search: '3x2', clock: '2x1', weather: '2x1',
-  links: '2x1', leetcode: '2x1', f1: '2x1',
+  clock: '3x2', search: '3x1', links: '3x1',
+  weather: '2x2', leetcode: '2x1', f1: '3x2',
 };
 
 const DEFAULT_SETTINGS = {
@@ -134,7 +134,7 @@ function storageSet(obj) {
 async function loadAll() {
   const raw = await storageGet(['settings', 'modulePositions', 'hiddenModules', 'moduleSizes', 'moduleZOrders']);
   const settings = { ...DEFAULT_SETTINGS, ...(raw.settings ?? {}) };
-  const hidden   = raw.hiddenModules ?? [];
+  const hidden   = raw.hiddenModules ?? ['weather', 'leetcode', 'f1'];
 
   // 遷移 size 格式
   const rawSizes = raw.moduleSizes ?? {};
