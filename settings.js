@@ -164,8 +164,28 @@ function showToast() {
   setTimeout(() => t.classList.remove('show'), 2000);
 }
 
+// ── Sidebar navigation ────────────────────────────────────────
+function initNav() {
+  const navItems = document.querySelectorAll('.settings-nav-item');
+  const panels   = document.querySelectorAll('.settings-panel');
+
+  function switchPanel(id) {
+    navItems.forEach(n => n.classList.toggle('active', n.dataset.panel === id));
+    panels.forEach(p   => p.classList.toggle('active',   p.dataset.panel === id));
+    sessionStorage.setItem('settings-panel', id);
+  }
+
+  navItems.forEach(btn => btn.addEventListener('click', () => switchPanel(btn.dataset.panel)));
+
+  const saved = sessionStorage.getItem('settings-panel');
+  if (saved && document.querySelector(`.settings-panel[data-panel="${saved}"]`)) {
+    switchPanel(saved);
+  }
+}
+
 // ── Main ─────────────────────────────────────────────────────
 async function main() {
+  initNav();
   const settings = await loadSettings();
   const { hiddenModules: rawHidden } = await storageGet(['hiddenModules']);
   let hiddenModules = rawHidden ?? [];

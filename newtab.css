@@ -912,9 +912,8 @@ body.edit-mode #hidden-bar.has-items { opacity: 1; pointer-events: auto; }
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 html.settings-page,
 html.settings-page body {
-  height: auto;
-  min-height: 100vh;
-  overflow-y: auto;
+  height: 100vh;
+  overflow: hidden;
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font);
@@ -923,24 +922,69 @@ html.settings-page body {
   -webkit-font-smoothing: antialiased;
 }
 
-.feedback-btn {
-  position: fixed; top: 20px; right: 20px;
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 7px 14px; border-radius: 8px;
-  font-size: 0.8125rem; font-weight: 500; text-decoration: none;
-  background: var(--module-bg); color: var(--fg-muted);
-  border: 1px solid var(--border);
-  transition: background 0.15s, color 0.15s;
-  z-index: 100;
+/* ── Settings layout ── */
+.settings-layout {
+  display: flex;
+  height: 100vh;
 }
-.feedback-btn:hover { background: var(--hover-bg); color: var(--fg); }
 
-.settings-wrap { max-width: 480px; margin: 0 auto; padding: 32px 24px 100px; }
-.settings-wrap h1 { font-size: 20px; font-weight: 600; margin-bottom: 32px; color: var(--fg); }
-.settings-section { margin-bottom: 32px; }
-.settings-section h2 {
+.settings-sidebar {
+  width: 200px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--link-border);
+  padding: 24px 12px 16px;
+  overflow-y: auto;
+}
+
+.settings-sidebar-title {
+  font-size: 18px; font-weight: 600;
+  color: var(--fg); padding: 0 8px;
+  margin-bottom: 20px;
+}
+
+.settings-nav { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+
+.settings-nav-item {
+  display: flex; align-items: center; gap: 9px;
+  width: 100%; padding: 8px 10px;
+  border: none; border-radius: 8px;
+  background: none; color: var(--fg-muted);
+  font-size: 13.5px; font-weight: 500; font-family: var(--font);
+  cursor: pointer; text-align: left;
+  transition: background 0.12s, color 0.12s;
+}
+.settings-nav-item:hover { background: var(--btn-bg); color: var(--fg); }
+.settings-nav-item.active { background: var(--btn-hover); color: var(--fg); }
+.nav-icon { font-size: 14px; width: 18px; text-align: center; opacity: 0.7; }
+
+.feedback-btn-sidebar {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  margin-top: 12px; padding: 8px 12px; border-radius: 8px;
+  font-size: 12.5px; font-weight: 500; text-decoration: none;
+  color: var(--fg-muted); border: 1px solid var(--link-border);
+  transition: background 0.15s, color 0.15s;
+}
+.feedback-btn-sidebar:hover { background: var(--btn-bg); color: var(--fg); }
+
+.settings-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px 40px 100px;
+}
+
+.settings-panel { display: none; max-width: 520px; }
+.settings-panel.active { display: block; }
+
+.panel-title {
+  font-size: 20px; font-weight: 600;
+  color: var(--fg); margin-bottom: 24px;
+}
+.panel-subtitle {
   font-size: 11px; font-weight: 600; letter-spacing: 0.09em;
-  text-transform: uppercase; color: var(--fg-muted); margin-bottom: 12px;
+  text-transform: uppercase; color: var(--fg-muted);
+  margin: 24px 0 12px;
 }
 .settings-row {
   display: flex; align-items: center; justify-content: space-between;
