@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="newtab-page">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>新分頁</title>
+  <link rel="stylesheet" href="newtab.css" />
+</head>
+<body>
+  <div id="bg-layer"><div id="bg-img"></div></div>
+
+  <div id="app">
+    <div id="modules-container"></div>
+
+    <!-- Snap preview ghost (drag) -->
+    <div id="snap-preview"></div>
+
+    <!-- Hidden modules restore (only visible in edit mode) -->
+    <div id="hidden-bar">
+      <span class="hidden-bar-label">已隱藏</span>
+      <div id="hidden-chips"></div>
+    </div>
+
+    <!-- Bottom toolbar -->
+    <div id="toolbar">
+      <button id="edit-btn" title="編輯模組位置" aria-label="編輯模組位置">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+        </svg>
+        編輯版面
+      </button>
+      <button id="done-btn" class="hidden" title="完成編輯">完成</button>
+      <button id="settings-btn" title="設定" aria-label="開啟設定">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06
+            a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09
+            A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83
+            l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09
+            A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83
+            l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09
+            a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83
+            l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09
+            a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+        設定
+      </button>
+    </div>
+  </div>
+
+  <!-- Module content templates -->
+  <template id="tpl-search">
+    <div id="search-google-label">
+      <span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span>
+    </div>
+    <div id="search-bar">
+      <svg id="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input id="search-input" type="text" placeholder="搜尋 Google…" autocomplete="off" spellcheck="false" />
+      <button id="search-btn" type="button" aria-label="搜尋">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </button>
+    </div>
+  </template>
+
+  <template id="tpl-clock">
+    <div id="clock-time"></div>
+    <div id="clock-greeting"></div>
+    <div id="clock-date"></div>
+  </template>
+
+  <template id="tpl-weather">
+    <!-- 當前天氣 -->
+    <div id="weather-current">
+      <div id="weather-content">
+        <span id="weather-icon"></span>
+        <span id="weather-temp"></span>
+        <span id="weather-desc"></span>
+        <span id="weather-location"></span>
+      </div>
+    </div>
+    <!-- 本日時段 -->
+    <div id="weather-hourly" class="hidden">
+      <div id="wh-summary">
+        <span id="wh-icon"></span>
+        <span id="wh-temp"></span>
+        <div id="wh-meta">
+          <span id="wh-desc"></span>
+          <span id="wh-loc"></span>
+        </div>
+      </div>
+      <div class="wh-divider"></div>
+      <div id="weather-hourly-list"></div>
+    </div>
+    <!-- 本周預測 -->
+    <div id="weather-weekly" class="hidden">
+      <div id="weather-weekly-list"></div>
+    </div>
+    <div id="weather-error" class="hidden"></div>
+  </template>
+
+  <template id="tpl-links">
+    <div id="links-grid"></div>
+  </template>
+
+  <template id="tpl-leetcode">
+    <div id="leetcode-content">
+      <div id="lc-left">
+        <div id="lc-header">
+          <span id="leetcode-total"></span>
+          <span id="lc-streak" class="hidden">🔥 <span id="lc-streak-count"></span></span>
+        </div>
+        <div id="lc-bars">
+          <div class="lc-bar-row">
+            <span class="lc-bar-label lc-easy-label">E</span>
+            <div class="lc-bar-track"><div class="lc-bar-fill lc-easy-fill"></div></div>
+            <span class="lc-bar-num lc-easy-num"></span>
+          </div>
+          <div class="lc-bar-row">
+            <span class="lc-bar-label lc-medium-label">M</span>
+            <div class="lc-bar-track"><div class="lc-bar-fill lc-medium-fill"></div></div>
+            <span class="lc-bar-num lc-medium-num"></span>
+          </div>
+          <div class="lc-bar-row">
+            <span class="lc-bar-label lc-hard-label">H</span>
+            <div class="lc-bar-track"><div class="lc-bar-fill lc-hard-fill"></div></div>
+            <span class="lc-bar-num lc-hard-num"></span>
+          </div>
+        </div>
+      </div>
+      <a id="lc-daily" href="#" target="_blank" class="hidden">
+        <div id="lc-daily-tag">今日一題</div>
+        <div id="lc-daily-title"></div>
+        <span id="lc-daily-diff"></span>
+      </a>
+    </div>
+    <div id="leetcode-error" class="hidden"></div>
+  </template>
+
+  <template id="tpl-f1">
+    <div id="f1-content" class="hidden">
+      <div id="f1-left">
+        <div id="f1-main">
+          <div id="f1-flag"></div>
+          <div id="f1-info">
+            <div id="f1-race-name"></div>
+            <div id="f1-countdown" class="f1-countdown"></div>
+          </div>
+        </div>
+        <div id="f1-ranking" class="hidden">
+          <span id="f1-rank-pos"></span>
+          <span class="f1-sep">·</span>
+          <span id="f1-rank-pts"></span>
+        </div>
+        <div id="f1-schedule" class="hidden">
+          <div id="f1-schedule-list"></div>
+        </div>
+      </div>
+      <div id="f1-circuit-panel" class="hidden">
+        <svg id="f1-circuit-svg" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+          <path id="f1-circuit-path" fill="none" stroke="currentColor"
+                stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div id="f1-circuit-name"></div>
+      </div>
+    </div>
+    <div id="f1-error" class="hidden error-text"></div>
+  </template>
+
+  <script src="newtab.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="settings-page">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>設定</title>
+  <link rel="stylesheet" href="newtab.css" />
+</head>
+<body>
+  <div class="settings-wrap">
+    <h1>設定</h1>
+
+    <!-- 外觀 -->
+    <div class="settings-section">
+      <h2>外觀</h2>
+      <div class="style-picker">
+        <label class="style-option" data-style="minimal">
+          <input type="radio" name="style" value="minimal" />
+          <div class="style-preview">
+            <div class="sp-clock">09:41</div>
+            <div class="sp-sub">早安</div>
+            <div class="sp-dots">
+              <div class="sp-dot"></div><div class="sp-dot"></div><div class="sp-dot"></div>
+            </div>
+          </div>
+          <div class="style-label">極簡</div>
+        </label>
+        <label class="style-option" data-style="card">
+          <input type="radio" name="style" value="card" />
+          <div class="style-preview">
+            <div class="sp-card"><div class="sp-clock">09:41</div><div class="sp-sub">早安</div></div>
+            <div class="sp-card"><div class="sp-row">☀️ 24°C</div></div>
+          </div>
+          <div class="style-label">卡片</div>
+        </label>
+        <label class="style-option" data-style="neon">
+          <input type="radio" name="style" value="neon" />
+          <div class="style-preview">
+            <div class="sp-card"><div class="sp-clock">09:41</div><div class="sp-sub">早安</div></div>
+            <div class="sp-card"><div class="sp-row" style="color:#4dff91">☀️ 24°C</div></div>
+          </div>
+          <div class="style-label">霓虹</div>
+        </label>
+      </div>
+      <div class="settings-row" style="margin-top:16px">
+        <label for="s-theme">色調</label>
+        <select id="s-theme">
+          <option value="system">跟隨系統</option>
+          <option value="light">淺色</option>
+          <option value="dark">深色</option>
+        </select>
+      </div>
+      <div class="settings-row">
+        <label for="s-animations">動畫效果</label>
+        <label class="toggle">
+          <input type="checkbox" id="s-animations" />
+          <span class="toggle-track"></span>
+        </label>
+      </div>
+      <div class="settings-row">
+        <label>格子欄數</label>
+        <div class="seg-ctrl" id="s-grid-cols">
+          <button class="seg-btn" data-value="7">7</button>
+          <button class="seg-btn" data-value="9">9</button>
+          <button class="seg-btn" data-value="11">11</button>
+          <button class="seg-btn" data-value="13">13</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 背景 -->
+    <div class="settings-section">
+      <h2>背景</h2>
+
+      <!-- Type tabs -->
+      <div class="bg-type-tabs">
+        <button class="bg-tab" data-bg-type="default">預設</button>
+        <button class="bg-tab" data-bg-type="color">純色</button>
+        <button class="bg-tab" data-bg-type="gradient">漸層</button>
+        <button class="bg-tab" data-bg-type="image">圖片</button>
+      </div>
+
+      <!-- Color panel -->
+      <div class="bg-panel" id="bg-panel-color">
+        <div class="settings-row">
+          <label for="s-bg-color">顏色</label>
+          <div class="color-input-wrap">
+            <input type="color" id="s-bg-color" value="#1a1a2e" />
+            <input type="text"  id="s-bg-color-hex" placeholder="#1a1a2e" maxlength="7" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Gradient panel -->
+      <div class="bg-panel" id="bg-panel-gradient">
+        <div class="gradient-presets" id="gradient-presets"></div>
+      </div>
+
+      <!-- Image panel -->
+      <div class="bg-panel" id="bg-panel-image">
+        <div class="bg-upload-area" id="bg-upload-area">
+          <input type="file" id="s-bg-file" accept="image/*" />
+          <div class="bg-upload-hint" id="bg-upload-hint">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+            <span>點擊或拖放圖片上傳</span>
+          </div>
+          <img id="bg-preview-img" src="" alt="" />
+        </div>
+        <div class="settings-row" style="margin-top:14px">
+          <label for="s-bg-blur">模糊程度</label>
+          <div class="slider-wrap">
+            <input type="range" id="s-bg-blur" min="0" max="20" step="1" value="0" />
+            <span id="s-bg-blur-val">0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 時鐘 -->
+    <div class="settings-section">
+      <h2>時鐘</h2>
+      <div class="settings-row">
+        <label for="s-time-format">時間格式</label>
+        <select id="s-time-format">
+          <option value="24">24 小時制</option>
+          <option value="12">12 小時制</option>
+        </select>
+      </div>
+      <div class="settings-row">
+        <label for="s-show-date">顯示日期</label>
+        <label class="toggle">
+          <input type="checkbox" id="s-show-date" />
+          <span class="toggle-track"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- 天氣 -->
+    <div class="settings-section">
+      <h2>天氣</h2>
+      <div class="settings-row">
+        <label for="s-weather-city">城市（留空自動定位）</label>
+        <input type="text" id="s-weather-city" placeholder="例：台北" />
+      </div>
+    </div>
+
+    <!-- LeetCode -->
+    <div class="settings-section">
+      <h2>LeetCode</h2>
+      <div class="settings-row">
+        <label for="s-lc-user">使用者名稱</label>
+        <input type="text" id="s-lc-user" placeholder="your_username" />
+      </div>
+    </div>
+
+    <!-- F1 -->
+    <div class="settings-section">
+      <h2>F1 賽事</h2>
+      <div class="settings-row">
+        <label>追蹤對象</label>
+        <div class="seg-ctrl" id="s-f1-track-type">
+          <button class="seg-btn" data-value="none">不追蹤</button>
+          <button class="seg-btn" data-value="team">車隊</button>
+          <button class="seg-btn" data-value="driver">車手</button>
+        </div>
+      </div>
+      <div class="settings-row" id="f1-team-row">
+        <label for="s-f1-team">車隊</label>
+        <select id="s-f1-team"></select>
+      </div>
+      <div class="settings-row" id="f1-driver-row">
+        <label for="s-f1-driver">車手</label>
+        <select id="s-f1-driver"></select>
+      </div>
+    </div>
+
+    <!-- 常用連結管理 -->
+    <div class="settings-section">
+      <h2>常用連結</h2>
+      <div id="links-editor"></div>
+      <button class="btn-primary" id="add-link-btn">＋ 新增連結</button>
+    </div>
+
+    <button class="btn-primary" id="save-btn">儲存設定</button>
+  </div>
+
+  <div class="save-toast" id="save-toast">已儲存</div>
+  <script src="settings.js" type="module"></script>
+</body>
+</html>

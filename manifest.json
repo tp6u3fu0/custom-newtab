@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "Custom New Tab",
+  "version": "1.0",
+  "description": "極簡新分頁：時鐘、天氣、常用連結、LeetCode 進度",
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  },
+  "permissions": ["storage", "geolocation"],
+  "host_permissions": [
+    "https://api.open-meteo.com/*",
+    "https://leetcode.com/*",
+    "https://geocoding-api.open-meteo.com/*",
+    "https://www.google.com/*",
+    "https://api.jolpi.ca/*",
+    "https://flagcdn.com/*"
+  ],
+  "action": {
+    "default_popup": "settings.html",
+    "default_icon": {
+      "16": "assets/icons/icon16.png",
+      "48": "assets/icons/icon48.png",
+      "128": "assets/icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  }
+}
