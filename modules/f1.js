@@ -45,7 +45,6 @@ const CIRCUIT_PATHS = {
 
 // ── Main ─────────────────────────────────────────────────────
 export async function initF1({ trackType = 'none', teamId = '', driverId = '' } = {}) {
-  console.log('[F1] initF1', { trackType, teamId, driverId });
   const contentEl = document.getElementById('f1-content');
   const errorEl   = document.getElementById('f1-error');
 
@@ -56,7 +55,6 @@ export async function initF1({ trackType = 'none', teamId = '', driverId = '' } 
       null;
 
     const [nextRace, ranking] = await Promise.all([getNextRace(), rankingFetch]);
-    console.log('[F1] ranking:', ranking);
 
     render(nextRace, ranking);
     contentEl.classList.remove('hidden');
@@ -118,7 +116,6 @@ async function getTeamRanking(teamId) {
   const res  = await fetch(`${BASE}/current/constructorStandings.json`);
   const data = await res.json();
   const standings = data?.MRData?.StandingsTable?.StandingsLists?.[0]?.ConstructorStandings ?? [];
-  console.log('[F1] constructor IDs:', standings.map(s => s.Constructor.constructorId));
   const entry = standings.find(s => s.Constructor.constructorId === teamId);
   if (!entry) return null;
 
