@@ -15,6 +15,10 @@ const DEFAULT_SETTINGS = {
   bgGradient:  '',
   bgBlur:      0,
   gridCols:    9,
+  cardPreset:      'bare',
+  cardRadius:      14,
+  cardBorderWidth: 1,
+  cardBlur:        16,
 };
 
 const GRADIENT_PRESETS = [
@@ -219,6 +223,60 @@ async function main() {
     if (btn) setF1TrackType(btn.dataset.value);
   });
 
+  // 卡片外觀
+  const cardBlurRow    = document.getElementById('s-card-blur-row');
+  const cardBorderRow  = document.getElementById('s-card-border-row');
+  const cardPresetCtrl = document.getElementById('s-card-preset');
+  const cardRadiusEl   = document.getElementById('s-card-radius');
+  const cardRadiusVal  = document.getElementById('s-card-radius-val');
+  const cardBlurEl     = document.getElementById('s-card-blur');
+  const cardBlurVal    = document.getElementById('s-card-blur-val');
+  const cardBorderCtrl = document.getElementById('s-card-border-width');
+
+  let currentCardPreset      = settings.cardPreset      ?? 'bare';
+  let currentCardRadius      = settings.cardRadius      ?? 14;
+  let currentCardBorderWidth = settings.cardBorderWidth ?? 1;
+  let currentCardBlur        = settings.cardBlur        ?? 16;
+
+  function setCardPreset(val) {
+    currentCardPreset = val;
+    cardPresetCtrl.querySelectorAll('.seg-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.value === val));
+    cardBlurRow.style.display   = val === 'glass'  ? '' : 'none';
+    cardBorderRow.style.display = (val === 'solid' || val === 'glass') ? '' : 'none';
+  }
+
+  function setCardBorderWidth(val) {
+    currentCardBorderWidth = val;
+    cardBorderCtrl.querySelectorAll('.seg-btn').forEach(b =>
+      b.classList.toggle('active', +b.dataset.value === +val));
+  }
+
+  cardRadiusEl.value     = currentCardRadius;
+  cardRadiusVal.textContent = currentCardRadius;
+  cardBlurEl.value       = currentCardBlur;
+  cardBlurVal.textContent = currentCardBlur;
+
+  setCardPreset(currentCardPreset);
+  setCardBorderWidth(currentCardBorderWidth);
+
+  cardPresetCtrl.addEventListener('click', e => {
+    const btn = e.target.closest('.seg-btn');
+    if (btn) setCardPreset(btn.dataset.value);
+  });
+  cardBorderCtrl.addEventListener('click', e => {
+    const btn = e.target.closest('.seg-btn');
+    if (btn) setCardBorderWidth(btn.dataset.value);
+  });
+  cardRadiusEl.addEventListener('input', () => {
+    currentCardRadius = +cardRadiusEl.value;
+    cardRadiusVal.textContent = currentCardRadius;
+  });
+  cardBlurEl.addEventListener('input', () => {
+    currentCardBlur = +cardBlurEl.value;
+    cardBlurVal.textContent = currentCardBlur;
+  });
+
   // 模組開關
   const togglesContainer = document.getElementById('module-toggles');
   ALL_MODULES.forEach(({ id, name }) => {
@@ -375,7 +433,11 @@ async function main() {
       bgColor:     colorHex.value || colorPicker.value,
       bgGradient:  currentBgGradient,
       bgBlur:      Number(blurSlider.value),
-      gridCols:    currentGridCols,
+      gridCols:        currentGridCols,
+      cardPreset:      currentCardPreset,
+      cardRadius:      currentCardRadius,
+      cardBorderWidth: currentCardBorderWidth,
+      cardBlur:        currentCardBlur,
     };
 
     if (updated.weatherCity !== settings.weatherCity) localStorage.removeItem('weather_cache');

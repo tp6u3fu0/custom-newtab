@@ -159,6 +159,17 @@ async function loadAll() {
 function applyStyle(style) {
   document.documentElement.setAttribute('data-style', style ?? 'minimal');
 }
+function applyCardStyle(settings) {
+  const root = document.documentElement;
+  const preset = settings.cardPreset ?? 'bare';
+  root.setAttribute('data-card', preset);
+  const r = settings.cardRadius ?? 14;
+  const bw = settings.cardBorderWidth ?? 1;
+  const bl = settings.cardBlur ?? 16;
+  root.style.setProperty('--mod-radius', `${r}px`);
+  root.style.setProperty('--mod-border-width', `${bw}px`);
+  root.style.setProperty('--mod-blur', `${bl}px`);
+}
 function applyTheme(theme, style) {
   if (style === 'neon') { document.documentElement.removeAttribute('data-theme'); return; }
   const dark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
@@ -451,6 +462,7 @@ async function main() {
   applyStyle(settings.style);
   applyTheme(settings.theme, settings.style);
   applyBackground(settings);
+  applyCardStyle(settings);
   if (settings.animations !== false) document.body.classList.add('animations');
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
     applyTheme(settings.theme, settings.style);

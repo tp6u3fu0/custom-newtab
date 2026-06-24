@@ -61,6 +61,37 @@
           <span class="toggle-track"></span>
         </label>
       </div>
+      <div class="settings-row" style="margin-top:16px">
+        <label>模組卡片</label>
+        <div class="seg-ctrl" id="s-card-preset">
+          <button class="seg-btn" data-value="bare">無框</button>
+          <button class="seg-btn" data-value="solid">實框</button>
+          <button class="seg-btn" data-value="glass">玻璃</button>
+          <button class="seg-btn" data-value="float">浮動</button>
+        </div>
+      </div>
+      <div class="settings-row" id="s-card-blur-row">
+        <label for="s-card-blur">模糊強度</label>
+        <div class="slider-wrap">
+          <input type="range" id="s-card-blur" min="4" max="32" step="2" value="16" />
+          <span id="s-card-blur-val">16</span>
+        </div>
+      </div>
+      <div class="settings-row">
+        <label for="s-card-radius">圓角</label>
+        <div class="slider-wrap">
+          <input type="range" id="s-card-radius" min="0" max="28" step="2" value="14" />
+          <span id="s-card-radius-val">14</span>
+        </div>
+      </div>
+      <div class="settings-row" id="s-card-border-row">
+        <label>邊框粗細</label>
+        <div class="seg-ctrl" id="s-card-border-width">
+          <button class="seg-btn" data-value="0">無</button>
+          <button class="seg-btn" data-value="1">細</button>
+          <button class="seg-btn" data-value="2">粗</button>
+        </div>
+      </div>
       <div class="settings-row">
         <label>格子欄數</label>
         <div class="seg-ctrl" id="s-grid-cols">
